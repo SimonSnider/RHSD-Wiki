@@ -10,3 +10,35 @@ body {
 .page-container {
     margin-top: 75px;
 }
+
+.leftNavigator {
+    grid-area: "sidebar";
+    background-color: blue;
+}
+
+.bodyText {
+    grid-area: "main";
+    background-color: red;
+}
+
+.footer {
+    grid-area: "footer";
+    background-color: orange;
+}
+
+.container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 33% 67%;
+    grid-template-rows: 85% 15%;
+    grid-template-areas:
+        "sidebar main"
+        "footer footer"
+    ;
+}
+
+@media (min-width: 3px) {
+    .container {
+        min-height: 200px;
+    }
+}

@@ -9,11 +9,23 @@ body {
 
 .page-container {
     margin-top: 75px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    /*https://stackoverflow.com/questions/18665171/how-to-make-the-main-content-div-fill-height-of-screen-with-css*/
+    position: absolute;
+    top: 0px; /* Header Height */
+    bottom: 20px; /* Footer Height */
+    right:0px;
+    left:0px;
+    width: 100%;
+    
 }
 
 .leftNavigator {
     grid-area: "sidebar";
     background-color: blue;
+    height:100%;
 }
 
 .bodyText {

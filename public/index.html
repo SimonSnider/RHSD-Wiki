@@ -15,25 +15,58 @@
     <nav class="navbar navbar-dark fixed-top">
       <a class="navbar-brand" href="#">RHSD Wiki</a>
       <button id="editButton" type="button" class="btn btn-light"><i class="material-icons">edit</i></button>
-      <button id="searchButton"  type="button" class="btn btn-light"><i class="material-icons">search</i></button>
-      <button id="profileButton"  type="button" class="btn btn-light"><i class="material-icons">person</i></button>
+      <button id="searchButton" type="button" class="btn btn-light"><i class="material-icons">search</i></button>
+      <button id="profileButton" type="button" class="btn btn-light"><i class="material-icons">person</i></button>
     </nav>
-    <div class="leftNavigator"><br>left navigator! whoo
-        <div>a</div>
-        <ul>
-          <li>b</li>
-          <li>c</li>
-        </ul>
+    <div class="leftNavigator">left navigator! whoo
+      <ul class="directory-list">
+        <li>assets
+          <ul>
+            <li>css</li>
+            <li>js</li>
+            <li>images</li>
+            <li>functions</li>
+          </ul>
+        </li>
+        <li>templates
+          <ul>
+            <li>pages</li>
+            <li>header.tpl</li>
+            <li>menu.tpl</li>
+            <li>footer.tpl</li>
+          </ul>
+        </li>
+        <li>index.php
+          <ul>
+            <li>pages</li>
+            <li>header.tpl</li>
+            <li>menu.tpl</li>
+            <li>footer.tpl</li>
+          </ul>
+        </li>
+        <li>style.css
+          <ul>
+            <li>pages</li>
+            <li>header.tpl</li>
+            <li>menu.tpl</li>
+            <li>footer.tpl</li>
+          </ul>
+        </li>
+      </ul>
 
     </div>
-    <div class = "body">body!</div>
+    <div class="body">body!</div>
 
   </div>
   <script src="scripts/jquery.min.js"></script>
   <script src="scripts/popper.js"></script>
   <script src="scripts/bootstrap-material-design.js"></script>
-  <script>$("body").bootstrapMaterialDesign();</script>
+  <script>
+    $("body").bootstrapMaterialDesign();
+  </script>
   <script src="scripts/main.js"></script>
+  <script src="scripts/navigator.js"></script>
+
 </body>
 
 </html>

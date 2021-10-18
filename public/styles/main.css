@@ -19,47 +19,38 @@ body {
     margin-bottom: 0px;
     /*https://stackoverflow.com/questions/18665171/how-to-make-the-main-content-div-fill-height-of-screen-with-css*/
     position: absolute;
-    top: 0px; /* Header Height */
-    bottom: 0px; /* Footer Height */
-    right:0px;
-    left:0px;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
     width: 100%;
-    padding:0px 0px 0px 0px;
-    
+    padding: 0px 0px 0px 0px;
+
 }
 
 .leftNavigator {
-    /* grid-area: "sidebar"; */
     background-color: #a7a7a7;
-    /* height:100%; */
+    padding-left: 2px;
     order: 1;
-    width:15%
+    width: 15%
 }
 
 
 .body {
-    /* grid-area: "main"; */
-    order:2;
-    width:85%;
+    padding-left: 2px;
+    width: 85%;
+    order: 2;
 }
 
 
 .container {
     width: 100%;
-    /* display: grid;
-    grid-template-columns: 33% 67%;
-    grid-template-rows: 85% 15%;
-    grid-template-areas:
-        "sidebar main"
-        "footer footer"
-    ; */
-
     display: flex;
     flex-direction: row;
 }
 
-@media (min-width: 3px) {
-    .container {
-        min-height: 200px;
-    }
-}
+/* media queries to make navigator bigger as the screen gets smaller*/
+/* @media screen and (min-width: 775px) {
+    .leftNavigator{ width: 15%;} 
+    .body { width: 85%}
+} */

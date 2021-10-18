@@ -5,6 +5,11 @@ body {
 .navbar {
     background-color: #800000;
     color: white;
+    display: block;
+}
+
+.navbar > button {
+    float: right
 }
 
 .page-container {
@@ -32,7 +37,7 @@ body {
 }
 
 
-.bodyText {
+.body {
     /* grid-area: "main"; */
     order:2;
     width:85%;

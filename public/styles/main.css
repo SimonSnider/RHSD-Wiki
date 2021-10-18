@@ -25,7 +25,7 @@ body {
 
 .leftNavigator {
     /* grid-area: "sidebar"; */
-    background-color: blue;
+    background-color: #a7a7a7;
     /* height:100%; */
     order: 1;
     width:15%
@@ -34,7 +34,6 @@ body {
 
 .bodyText {
     /* grid-area: "main"; */
-    background-color: red;
     order:2;
     width:85%;
 }

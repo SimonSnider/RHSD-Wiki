@@ -6,13 +6,15 @@ body {
     background-color: #800000;
     color: white;
     display: block;
-    order:1;
+    order: 1;
 }
 
-.navbar > button {
-    float: right
+.navbar>button {
+    float: right;
 }
-
+.navbar> #navButton {
+    float: left;
+}
 .page-container {
     margin-top: 66px;
     margin-left: 0px;
@@ -33,13 +35,22 @@ body {
     background-color: #a7a7a7;
     padding-left: 2px;
     order: 2;
-    width: 15%
+    width: 20%;
+}
+
+/*https://stackoverflow.com/questions/6722467/how-to-remove-the-default-link-color-of-the-html-hyperlink-a-tag*/
+.leftNavigator a {
+    color: inherit;
+}
+
+.leftNavigator ul {
+    padding-left: 25px;
 }
 
 
 .body {
     padding-left: 2px;
-    width: 85%;
+    width: 80%;
     order: 3;
 }
 
@@ -52,7 +63,24 @@ body {
 }
 
 /* media queries to make navigator bigger as the screen gets smaller*/
-/* @media screen and (min-width: 775px) {
-    .leftNavigator{ width: 15%;} 
-    .body { width: 85%}
-} */
+@media screen and (min-width: 1024px) {
+    .leftNavigator {
+        width: 15%;
+    }
+
+    .body {
+        width: 85%
+    }
+}
+
+@media screen and (min-width: 450px) {
+    #navButton{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .leftNavigator{
+        display: none;
+    }
+}

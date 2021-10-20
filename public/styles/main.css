@@ -75,7 +75,7 @@ p{
 
 /* media queries to make navigator bigger as the screen gets smaller*/
 @media screen and (min-width: 1024px) {
-    .leftNavigator {
+    #leftNavigator {
         width: 15%;
     }
 

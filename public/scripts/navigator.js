@@ -29,11 +29,11 @@ var listOpen = false;
 document.querySelector("#navButton").onclick = (event) => {
     if (!listOpen) {
         document.querySelector(".body").style.display = "none";
-        document.querySelector(".leftNavigator").style.display = "contents";
+        document.querySelector("#leftNavigator").style.display = "contents";
         document.querySelector("body").style.backgroundColor = "#a7a7a7";
     } else {
         document.querySelector(".body").style.display = "contents";
-        document.querySelector(".leftNavigator").style.display = "none";
+        document.querySelector("#leftNavigator").style.display = "none";
         document.querySelector("body").style.backgroundColor = "#DDDDDD";
     }
     listOpen = !listOpen;
@@ -42,10 +42,10 @@ document.querySelector("#navButton").onclick = (event) => {
 function myFunction(x) {
     if (x.matches) { // If media query matches
         document.querySelector(".body").style.display = "flex";
-        document.querySelector(".leftNavigator").style.display = "flex";
+        document.querySelector("#leftNavigator").style.display = "flex";
         document.querySelector("body").style.backgroundColor = "#DDDDDD";
     } else {
-        document.querySelector(".leftNavigator").style.display = "none";
+        document.querySelector("#leftNavigator").style.display = "none";
         document.querySelector(".body").style.display = "contents";
         listOpen = false;
     }

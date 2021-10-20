@@ -31,7 +31,7 @@ body {
 
 }
 
-.leftNavigator {
+#leftNavigator {
     background-color: #a7a7a7;
     padding-left: 2px;
     order: 2;
@@ -39,11 +39,11 @@ body {
 }
 
 /*https://stackoverflow.com/questions/6722467/how-to-remove-the-default-link-color-of-the-html-hyperlink-a-tag*/
-.leftNavigator a {
+#leftNavigator a {
     color: inherit;
 }
 
-.leftNavigator ul {
+#leftNavigator ul {
     padding-left: 25px;
 }
 
@@ -80,7 +80,7 @@ body {
 }
 
 @media screen and (max-width: 450px) {
-    .leftNavigator{
+    #leftNavigator{
         display: none;
     }
 }

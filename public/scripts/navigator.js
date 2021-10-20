@@ -46,7 +46,7 @@ function myFunction(x) {
         document.querySelector("body").style.backgroundColor = "#DDDDDD";
     } else {
         document.querySelector("#leftNavigator").style.display = "none";
-        document.querySelector(".body").style.display = "contents";
+        document.querySelector(".body").style.display = "flex";
         listOpen = false;
     }
 }

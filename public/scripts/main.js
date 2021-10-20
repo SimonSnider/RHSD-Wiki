@@ -14,6 +14,10 @@ rhit.FB_PAGE_KEY_NAME = "name";
 rhit.FB_PAGE_KEY_VIDEO_LINK = "videoLink";
 rhit.FB_PAGE_KEY_HIDDEN = "hidden";
 
+rhit.fbFolderManager = null;
+rhit.fbPageManager = null;
+rhit.fbOfficerManager = null;
+
 
 function htmlToElement(html) {
 	var template = document.createElement('template');
@@ -59,6 +63,7 @@ rhit.FbFolderManager = class {
 			})
 	}
 	beginListening(changeListener) {
+		console.log("folder manager listening");
 		this._ref.orderBy(rhit.FB_FOLDER_KEY_NAME, 'desc').limit(50).onSnapshot((querySnapshot) => {
 			this._documentSnapshots = querySnapshot.docs;
 			changeListener();
@@ -114,6 +119,7 @@ rhit.FbPageManager = class {
 			})
 	}
 	beginListening(changeListener) {
+		console.log("page manager listening");
 		this._ref.orderBy(rhit.FB_PAGE_KEY_NAME, 'desc').limit(50).onSnapshot((querySnapshot) => {
 			this._documentSnapshots = querySnapshot.docs;
 			changeListener();
@@ -172,9 +178,74 @@ rhit.FbOfficerManager = class {
 
 }
 
+rhit.NavigatorManager = class {
+	constructor() {
+		console.log("NavigatorManager created");
+		rhit.fbFolderManager.beginListening(this.updateNavigatorList.bind(this));
+		rhit.fbPageManager.beginListening(this.updateNavigatorList.bind(this));
+	}
+
+	updateNavigatorList() {
+		const newList = htmlToElement('<ul class="directory-list"></ul>')
+
+		for (let i = 0; i < rhit.fbFolderManager.length; i++) {
+			const folder = rhit.fbFolderManager.getFolderAtIndex(i);
+			if (!folder.hidden) {
+				const pages = rhit.fbPageManager.getPagesByFolder(folder.id);
+
+				const newFolderItem = this._createFolderItem(folder);
+				
+				const newPageList = htmlToElement(`<ul class='navigatorPageList'  style="display: none"></ul>`);
+				for (let j = 0; j < pages.length; j++) {
+					if (!pages[j].hidden){
+						const newPageItem = this._createPageItem(pages[j]);
+						//do newPageItem onclicks
+						newPageList.appendChild(newPageItem);
+					}
+				}
+				// newFolderItem.querySelector("a").onclick = (e) => {
+				// 	console.log("folder click");
+				// 	newFolderItem.querySelector("ul").slideToggle("fast");
+				// 	e.preventDefault();
+				// }
+				$(newFolderItem).find("a").click(function (e) {
+					console.log("folder click");
+					$(this).siblings("ul").slideToggle("fast");
+					e.preventDefault();
+				});
+				newFolderItem.appendChild(newPageList);
+				newList.appendChild(newFolderItem)
+			}
+
+		}
+
+		const oldList = document.querySelector("#leftNavigator > .directory-list");
+		oldList.parentElement.appendChild(newList);
+		oldList.remove();
+
+	}
+
+	_createFolderItem(folder) {
+		return htmlToElement(`<li class='folder'>
+								<a href="#">${folder.name}</a> 
+							</li>`);
+	}
+
+	_createPageItem(page) {
+		return htmlToElement(`<li class="navigatorPageItem">${page.name}</li>`)
+	}
+}
+
 
 rhit.main = function () {
 	console.log("Ready");
+
+	rhit.fbFolderManager = new rhit.FbFolderManager();
+	rhit.fbPageManager = new rhit.FbPageManager();
+
+	if (document.querySelector("#leftNavigator")) {
+		new rhit.NavigatorManager();
+	}
 };
 
 rhit.main();

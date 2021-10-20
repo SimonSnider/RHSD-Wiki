@@ -28,7 +28,6 @@ body {
     left: 0px;
     width: 100%;
     padding: 0px 0px 0px 0px;
-
 }
 
 #leftNavigator {
@@ -51,7 +50,19 @@ body {
 .body {
     padding-left: 2px;
     width: 80%;
+    text-align: center;
     order: 3;
+}
+h1{
+    margin-bottom: 25px;
+}
+p{
+    margin-top:25px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+    width: 45em;
+    /* padding-left: 25px; */
 }
 
 

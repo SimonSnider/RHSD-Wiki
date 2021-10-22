@@ -17,6 +17,7 @@ rhit.FB_PAGE_KEY_HIDDEN = "hidden";
 rhit.fbFolderManager = null;
 rhit.fbPageManager = null;
 rhit.fbOfficerManager = null;
+rhit.fbSinglePageManager = null;
 
 
 function htmlToElement(html) {
@@ -64,7 +65,7 @@ rhit.FbFolderManager = class {
 	}
 	beginListening(changeListener) {
 		console.log("folder manager listening");
-		this._ref.orderBy(rhit.FB_FOLDER_KEY_NAME, 'desc').limit(50).onSnapshot((querySnapshot) => {
+		this._ref.orderBy(rhit.FB_FOLDER_KEY_NAME, 'asc').limit(50).onSnapshot((querySnapshot) => {
 			this._documentSnapshots = querySnapshot.docs;
 			changeListener();
 		});
@@ -120,7 +121,7 @@ rhit.FbPageManager = class {
 	}
 	beginListening(changeListener) {
 		console.log("page manager listening");
-		this._ref.orderBy(rhit.FB_PAGE_KEY_NAME, 'desc').limit(50).onSnapshot((querySnapshot) => {
+		this._ref.orderBy(rhit.FB_PAGE_KEY_NAME, 'asc').limit(50).onSnapshot((querySnapshot) => {
 			this._documentSnapshots = querySnapshot.docs;
 			changeListener();
 		});
@@ -174,11 +175,65 @@ rhit.FbPageManager = class {
 	}
 }
 
+rhit.FbSinglePageManager = class {
+	constructor(pageId) {
+		console.log("singlePageManager created");
+		this._documentSnapshot = null;
+		this._unsubscribe = null;
+		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_PAGES).doc(pageId);
+	}
+	beginListening(changeListener) {
+		console.log("page manager listening");
+		this._unsubscribe = this._ref.onSnapshot((doc) => {
+			if (doc.exists) {
+				console.log(doc.data())
+				this._documentSnapshot = doc;
+				changeListener();
+			} else {
+				console.log("No such document");
+			}
+		})
+	}
+	stopListening() { this._unsubscribe(); }
+	update(folderID, name, videoLink, body, hidden) {
+		this._ref.update({
+			[rhit.FB_PAGE_KEY_FOLDER_ID]: folderID,
+			[rhit.FB_PAGE_KEY_NAME]: name,
+			[rhit.FB_PAGE_KEY_VIDEO_LINK]: videoLink,
+			[rhit.FB_PAGE_KEY_BODY]: body,
+			[rhit.FB_PAGE_KEY_HIDDEN]: hidden
+		}).then(() => {
+			console.log("Page Sucessfully Updated");
+		}).catch((error) => {
+			console.error("Error updating document: ", error)
+		})
+	}
+	delete(id) {
+		docRef = this._ref.doc(id);
+		return docRef.delete().catch((error) => {
+			console.error("Error deleting document: ", error)
+		})
+	}
+
+	get name() {
+		return this._documentSnapshot.get(rhit.FB_PAGE_KEY_NAME);
+	}
+
+	get videoLink() {
+		return this._documentSnapshot.get(rhit.FB_PAGE_KEY_VIDEO_LINK);
+	}
+	
+	get body() {
+		return this._documentSnapshot.get(rhit.FB_PAGE_KEY_BODY);
+	}
+	
+}
+
 rhit.FbOfficerManager = class {
 
 }
 
-rhit.NavigatorManager = class {
+rhit.NavigatorController = class {
 	constructor() {
 		console.log("NavigatorManager created");
 		rhit.fbFolderManager.beginListening(this.updateNavigatorList.bind(this));
@@ -203,11 +258,6 @@ rhit.NavigatorManager = class {
 						newPageList.appendChild(newPageItem);
 					}
 				}
-				// newFolderItem.querySelector("a").onclick = (e) => {
-				// 	console.log("folder click");
-				// 	newFolderItem.querySelector("ul").slideToggle("fast");
-				// 	e.preventDefault();
-				// }
 				$(newFolderItem).find("a").click(function (e) {
 					console.log("folder click");
 					$(this).siblings("ul").slideToggle("fast");
@@ -232,19 +282,45 @@ rhit.NavigatorManager = class {
 	}
 
 	_createPageItem(page) {
-		return htmlToElement(`<li class="navigatorPageItem">${page.name}</li>`)
+		return htmlToElement(`<li class="navigatorPageItem"><a href="/?id=${page.id}">${page.name}</a></li>`)
+	}
+}
+
+rhit.PageDetailController = class {
+	constructor() {
+		console.log("Page Detail Controller created")
+		document.querySelector("#videoEmbed").hidden = false;
+		rhit.fbSinglePageManager.beginListening(this.updatePage.bind(this));
+	}
+
+	updatePage() {
+		document.querySelector("#pageTitle").innerHTML = rhit.fbSinglePageManager.name
+		document.querySelector("#videoEmbed").src = this.getVideoEmbedCode(rhit.fbSinglePageManager.videoLink);
+		document.querySelector("#pageBodyText").innerHTML = rhit.fbSinglePageManager.body
+	}
+
+	getVideoEmbedCode(videoLink) {
+		//TODO: get video embed code out of the videoLink string
+		return "https://www.youtube.com/embed/yF54hIuRmpk";
 	}
 }
 
 
 rhit.main = function () {
 	console.log("Ready");
-
+	const urlParams = new URLSearchParams(window.location.search);
 	rhit.fbFolderManager = new rhit.FbFolderManager();
 	rhit.fbPageManager = new rhit.FbPageManager();
 
 	if (document.querySelector("#leftNavigator")) {
-		new rhit.NavigatorManager();
+		new rhit.NavigatorController();
+	}
+	if (document.querySelector("#pageDetail")) {
+		pageId = urlParams.get("id")
+		if (pageId) {
+			rhit.fbSinglePageManager = new rhit.FbSinglePageManager(pageId);
+			new rhit.PageDetailController();
+		}
 	}
 };
 

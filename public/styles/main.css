@@ -91,6 +91,10 @@ p {
 .list-group-item{
     padding-left:0px;
 }
+
+.pageList a {
+    color: inherit;
+}
 #pageBodyText{
     justify-content: center;
 }

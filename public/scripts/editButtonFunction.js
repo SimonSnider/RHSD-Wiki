@@ -54,13 +54,12 @@ rhit.editPagesController = class {
         for (let i = 0; i < pages.length; i++) {
             const page = pages[i];
             const newPageButton = this._createPageButton(page);
-            // newFolderButton.onclick = (event) => {
-            //     newFolderButton.focus();
-            //     // document.querySelector("#folderName").value = folder.name;
-            //     console.log(`${folder.id}`);
-            //     window.location.href = `/editPagesList.html?fid=${folder.id}`;
+            newPageButton.onclick = (event) => {
+                // document.querySelector("#folderName").value = folder.name;
+                console.log(`${page.id}`);
+                window.location.href = `/editor.html?pid=${page.id}`;
 
-            // }
+            }
             newList.appendChild(newPageButton);
 
         }

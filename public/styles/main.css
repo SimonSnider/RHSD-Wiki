@@ -12,9 +12,11 @@ body {
 .navbar>button {
     float: right;
 }
-.navbar> #navButton {
+
+.navbar>#navButton {
     float: left;
 }
+
 .page-container {
     margin-top: 66px;
     margin-left: 0px;
@@ -53,11 +55,13 @@ body {
     text-align: center;
     order: 3;
 }
-h1{
+
+h1 {
     margin-bottom: 25px;
 }
-p{
-    margin-top:25px;
+
+p {
+    margin-top: 25px;
     margin-left: auto;
     margin-right: auto;
     text-align: left;
@@ -73,6 +77,18 @@ p{
     flex-direction: row;
 }
 
+.folderList{
+    border: 2px;
+    border-color: black;
+}
+.folderList a {
+    color: inherit;
+}
+
+.folderListItem:focus{
+    background-color: #a7a7a7;
+}
+
 /* media queries to make navigator bigger as the screen gets smaller*/
 @media screen and (min-width: 1024px) {
     #leftNavigator {
@@ -85,13 +101,13 @@ p{
 }
 
 @media screen and (min-width: 450px) {
-    #navButton{
+    #navButton {
         display: none;
     }
 }
 
 @media screen and (max-width: 450px) {
-    #leftNavigator{
+    #leftNavigator {
         display: none;
     }
 }

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+    <link rel="stylesheet" href="styles/bootstrap-material-design.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <title>RHSD Wiki</title>
+</head>
+
+<body>
+    <div id="editFoldersList" class="container page-container">
+        <nav class="navbar navbar-dark fixed-top">
+            <button id="navButton" type="button" class="btn btn-light"><i class="material-icons">menu</i></button>
+            <a class="navbar-brand" href="/">RHSD Wiki</a>
+            <button id="editButton" type="button" class="btn btn-light"><i class="material-icons">edit</i></button>
+            <button id="searchButton" type="button" class="btn btn-light"><i class="material-icons">search</i></button>
+            <button id="profileButton" type="button" class="btn btn-light"><i class="material-icons">person</i></button>
+        </nav>
+        <div id="leftNavigator">
+            <ul class="directory-list"></ul>
+        </div>
+        <div class="body">
+            <div id="body">
+                <div>
+                    <h1>Folders List</h1>
+                </div>
+                <ul class="folderList">
+                    <a href="#" class="list-group-item disabled">Disabled item</a>
+                    <a href="#" class="list-group-item disabled">Disabled item</a>
+                    <a href="#" class="list-group-item active">Active link item</a>
+                    <a href="#" class="list-group-item disabled">Disabled item</a>
+                </ul>
+            </div>
+        </div>
+        <script src="scripts/jquery.min.js"></script>
+        <script src="scripts/popper.js"></script>
+        <script src="scripts/bootstrap-material-design.js"></script>
+        <script>
+            $("body").bootstrapMaterialDesign();
+        </script>
+        <script src="/__/firebase/7.18.0/firebase-app.js"></script>
+        <script src="/__/firebase/7.18.0/firebase-analytics.js"></script>
+        <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
+        <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
+        <script src="/__/firebase/init.js"></script>
+        <script src="scripts/main.js"></script>
+        <script src="scripts/navigator.js"></script>
+        <script src="scripts/editButtonFunction.js"></script>
+
+</body>
+
+</html>

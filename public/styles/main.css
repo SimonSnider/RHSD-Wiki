@@ -88,6 +88,12 @@ p {
 .folderListItem:focus{
     background-color: #a7a7a7;
 }
+.list-group-item{
+    padding-left:0px;
+}
+#pageBodyText{
+    justify-content: center;
+}
 
 /* media queries to make navigator bigger as the screen gets smaller*/
 @media screen and (min-width: 1024px) {

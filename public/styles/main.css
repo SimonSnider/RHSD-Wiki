@@ -3,95 +3,75 @@ body {
 }
 
 .navbar {
+    justify-content: start;
     background-color: #800000;
     color: white;
-    display: block;
-    order: 1;
+}
+
+.page-container {
+    margin-top: 75px;
+}
+
+.bmd-layout-content {
+    height: 100vh;
 }
 
 .navbar>button {
-    float: right;
+    /* justify-self: end; */
 }
 .navbar> #navButton {
-    float: left;
-}
-.page-container {
-    margin-top: 66px;
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-bottom: 0px;
-    /*https://stackoverflow.com/questions/18665171/how-to-make-the-main-content-div-fill-height-of-screen-with-css*/
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    right: 0px;
-    left: 0px;
-    width: 100%;
-    padding: 0px 0px 0px 0px;
+    /* justify-self: start; */
 }
 
-#leftNavigator {
+.navbar>.navbar-brand {
+    margin-right: auto;
+}
+
+
+.sidenav {
     background-color: #a7a7a7;
     padding-left: 2px;
-    order: 2;
-    width: 20%;
+    width: 250px;
 }
 
 /*https://stackoverflow.com/questions/6722467/how-to-remove-the-default-link-color-of-the-html-hyperlink-a-tag*/
-#leftNavigator a {
+.sidenav a {
     color: inherit;
 }
 
-#leftNavigator ul {
+.sidenav ul {
     padding-left: 25px;
 }
 
 
-.body {
-    padding-left: 2px;
-    width: 80%;
-    text-align: center;
-    order: 3;
-}
 h1{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
     margin-bottom: 25px;
 }
 p{
     margin-top:25px;
     margin-left: auto;
     margin-right: auto;
-    text-align: left;
+    text-align: center;
     width: 45em;
     /* padding-left: 25px; */
 }
 
+#mainPage {
+    position: relative;
+}
 
-.container {
-    width: 100%;
+#pageDetail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* .container {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-}
-
-/* media queries to make navigator bigger as the screen gets smaller*/
-@media screen and (min-width: 1024px) {
-    #leftNavigator {
-        width: 15%;
-    }
-
-    .body {
-        width: 85%;
-    }
-}
-
-@media screen and (min-width: 450px) {
-    #navButton{
-        display: none;
-    }
-}
-
-@media screen and (max-width: 450px) {
-    #leftNavigator{
-        display: none;
-    }
-}
+} */

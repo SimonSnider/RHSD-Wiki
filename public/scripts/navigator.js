@@ -24,33 +24,3 @@ allFolders.each(function () {
     folderAndName.find("a").trigger('click');
 
 });
-
-var listOpen = false;
-document.querySelector("#navButton").onclick = (event) => {
-    if (!listOpen) {
-        document.querySelector(".body").style.display = "none";
-        document.querySelector("#leftNavigator").style.display = "contents";
-        document.querySelector("body").style.backgroundColor = "#a7a7a7";
-    } else {
-        document.querySelector(".body").style.display = "contents";
-        document.querySelector("#leftNavigator").style.display = "none";
-        document.querySelector("body").style.backgroundColor = "#DDDDDD";
-    }
-    listOpen = !listOpen;
-};
-
-function myFunction(x) {
-    if (x.matches) { // If media query matches
-        document.querySelector(".body").style.display = "flex";
-        document.querySelector("#leftNavigator").style.display = "flex";
-        document.querySelector("body").style.backgroundColor = "#DDDDDD";
-    } else {
-        document.querySelector("#leftNavigator").style.display = "none";
-        document.querySelector(".body").style.display = "flex";
-        listOpen = false;
-    }
-}
-
-var x = window.matchMedia("(min-width: 450px)");
-myFunction(x); // Call listener function at run time
-x.addListener(myFunction); // Attach listener function on state changes

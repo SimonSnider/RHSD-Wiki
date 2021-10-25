@@ -301,7 +301,10 @@ rhit.PageDetailController = class {
 
 	getVideoEmbedCode(videoLink) {
 		//TODO: get video embed code out of the videoLink string
-		return "https://www.youtube.com/embed/yF54hIuRmpk";
+		const urlStart = "https://www.youtube.com/embed/";
+		const urlParams = new URLSearchParams(videoLink);
+		const vidID = urlParams.get("https://www.youtube.com/watch?v");
+		return urlStart + vidID;
 	}
 }
 
@@ -309,6 +312,7 @@ rhit.PageDetailController = class {
 rhit.main = function () {
 	console.log("Ready");
 	const urlParams = new URLSearchParams(window.location.search);
+	console.log(urlParams.keys().next());
 	rhit.fbFolderManager = new rhit.FbFolderManager();
 	rhit.fbPageManager = new rhit.FbPageManager();
 
@@ -316,7 +320,7 @@ rhit.main = function () {
 		new rhit.NavigatorController();
 	}
 	if (document.querySelector("#pageDetail")) {
-		pageId = urlParams.get("id")
+		pageId = urlParams.get("id");
 		if (pageId) {
 			rhit.fbSinglePageManager = new rhit.FbSinglePageManager(pageId);
 			new rhit.PageDetailController();

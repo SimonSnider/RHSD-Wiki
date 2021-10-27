@@ -2,6 +2,7 @@ rhit.editFoldersController = class {
     constructor() {
         rhit.fbFolderManager.beginListening(this.populateFoldersList.bind(this));
         this.populateFoldersList();
+
     }
 
     populateFoldersList() {
@@ -23,6 +24,8 @@ rhit.editFoldersController = class {
         const oldList = document.querySelector(".folderList");
         oldList.parentElement.appendChild(newList);
         oldList.remove();
+
+
     }
 
     _createFolderButton(folder) {
@@ -30,13 +33,32 @@ rhit.editFoldersController = class {
     }
 
     _createBar() {
-        return htmlToElement(`<div class="input-group mb-3">
+        const editBar = htmlToElement(`<div class="input-group mb-3">
                                 <input type="text" id="folderName" class="form-control" placeholder="New Folder Name"
                                  aria-label="Recipient's username" aria-describedby="basic-addon2">
                                     <div class="input-group-append">
-                                         <button class="btn btn-outline-secondary" type="button"><i class="material-icons">done</i></button>
+                                         <button id = "createFolderButton" class="btn btn-outline-secondary" type="button"><i class="material-icons">done</i></button>
                                     </div>
                             </div>`);
+        editBar.querySelector("#createFolderButton").onclick = (event) => {
+            const name = editBar.querySelector("#folderName").value;
+            console.log(name);
+            // rhit.fbFolderManager.update(editBar.querySelector("#folderName").value,false);
+            // console.log(rhit.fbFolderManager.docRef.id);
+            this._createNewFolder(name);
+
+
+
+        };
+        return editBar;
+    }
+    async _createNewFolder(name) {
+        const a = firebase.firestore().collection("Folders").doc(name).set({
+            name: name,
+            hidden: false
+        });
+        const b = await a;
+        window.location.href = `/editPagesList.html?fid=${name}`;
     }
 
 }
@@ -76,13 +98,33 @@ rhit.editPagesController = class {
     }
 
     _createBar() {
-        return htmlToElement(`<div class="input-group mb-3">
-                                <input type="text" id="folderName" class="form-control" placeholder="New Page Name"
+        const editBar = htmlToElement(`<div class="input-group mb-3">
+                                <input type="text" id="pageName" class="form-control" placeholder="New Folder Name"
                                  aria-label="Recipient's username" aria-describedby="basic-addon2">
                                     <div class="input-group-append">
-                                         <button class="btn btn-outline-secondary" type="button"><i class="material-icons">done</i></button>
+                                         <button id = "createPageButton" class="btn btn-outline-secondary" type="button"><i class="material-icons">done</i></button>
                                     </div>
                             </div>`);
+        editBar.querySelector("#createPageButton").onclick = (event) => {
+            const name = editBar.querySelector("#pageName").value;
+            console.log(name);
+            // rhit.fbFolderManager.update(editBar.querySelector("#folderName").value,false);
+            // console.log(rhit.fbFolderManager.docRef.id);
+
+            this._setNewPage(name);
+        }
+        return editBar;
+    }
+    async _setNewPage(name) {
+        const a = firebase.firestore().collection("Pages").doc(name).set({
+            name: name,
+            hidden: false,
+            [rhit.FB_PAGE_KEY_VIDEO_LINK]: "",
+            [rhit.FB_PAGE_KEY_BODY]: "",
+            [rhit.FB_PAGE_KEY_FOLDER_ID]: new URLSearchParams(window.location.search).get("fid")
+        });
+        const b = await a;
+        window.location.href = `/editor.html?pid=${name}`;
     }
 
 }

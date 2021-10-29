@@ -52,13 +52,16 @@ rhit.editFoldersController = class {
         };
         return editBar;
     }
-    async _createNewFolder(name) {
-        const a = firebase.firestore().collection("Folders").doc(name).set({
-            name: name,
-            hidden: false
+    _createNewFolder(name) {
+        // const a = firebase.firestore().collection("Folders").doc(name).set({
+        //     name: name,
+        //     hidden: false
+        // });
+        // const b = await a;
+        rhit.fbFolderManager.add(name,false).then( (docRef) => {
+            window.location.href = `/editPagesList.html?fid=${docRef.id}`;
+
         });
-        const b = await a;
-        window.location.href = `/editPagesList.html?fid=${name}`;
     }
 
 }
@@ -99,7 +102,7 @@ rhit.editPagesController = class {
 
     _createBar() {
         const editBar = htmlToElement(`<div class="input-group mb-3">
-                                <input type="text" id="pageName" class="form-control" placeholder="New Folder Name"
+                                <input type="text" id="pageName" class="form-control" placeholder="New Page Name"
                                  aria-label="Recipient's username" aria-describedby="basic-addon2">
                                     <div class="input-group-append">
                                          <button id = "createPageButton" class="btn btn-outline-secondary" type="button"><i class="material-icons">done</i></button>
@@ -115,16 +118,19 @@ rhit.editPagesController = class {
         }
         return editBar;
     }
-    async _setNewPage(name) {
-        const a = firebase.firestore().collection("Pages").doc(name).set({
-            name: name,
-            hidden: false,
-            [rhit.FB_PAGE_KEY_VIDEO_LINK]: "",
-            [rhit.FB_PAGE_KEY_BODY]: "",
-            [rhit.FB_PAGE_KEY_FOLDER_ID]: new URLSearchParams(window.location.search).get("fid")
+    _setNewPage(name) {
+        // const a = firebase.firestore().collection("Pages").doc(name).set({
+        //     name: name,
+        //     hidden: false,
+        //     [rhit.FB_PAGE_KEY_VIDEO_LINK]: "",
+        //     [rhit.FB_PAGE_KEY_BODY]: "",
+        //     [rhit.FB_PAGE_KEY_FOLDER_ID]: new URLSearchParams(window.location.search).get("fid")
+        // });
+        // const b = await a;
+        rhit.fbPageManager.add(new URLSearchParams(window.location.search).get("fid"),name,"","",false).then( (docRef) => {
+            window.location.href = `/editor.html?pid=${docRef.id}`;
+
         });
-        const b = await a;
-        window.location.href = `/editor.html?pid=${name}`;
     }
 
 }

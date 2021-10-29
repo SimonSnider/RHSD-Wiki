@@ -92,3 +92,55 @@ p{
 #pageBodyText{
     justify-content: center;
 }
+
+#pageNameDiv, #videoUrlDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+#pageNameDiv > h1, #videoUrlDiv > h1 {
+    margin: 5px 10px;
+}
+
+#videoUrlDiv {
+    margin-bottom: 20px;
+}
+
+#pageNameDiv .bmd-form-group, #videoUrlDiv .bmd-form-group {
+    padding-top: 0;
+}
+
+#inputPageName.form-control, #inputVideoUrl.form-control {
+    font-size: 2rem;
+}
+
+#inputPageBody { 
+    margin-top:20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 45em;
+    height: 20em;
+    /* padding-left: 25px; */
+}
+
+#buttonDiv {
+    width: 40rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+}
+
+#saveButton {
+    background-color: darkgrey;
+    color: black
+}
+
+#deleteButton {
+    background-color: darkgrey;
+    color: red
+}

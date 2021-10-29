@@ -27,32 +27,30 @@
     </div>
     <main class="bmd-layout-content">
       <div id="pageDetail" class="container page-container">
-        <h1>Page Editor whoooooooo</h1>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/4T5FUeplg8" title="YouTube video player"
+        <div id="pageNameDiv">
+          <h1>Page name:</h1>
+          <input type="text" class="form-control" id="inputPageName">
+        </div>
+        <div id="videoUrlDiv">
+          <h1>Video Link:</h1>
+          <!-- Use onchange for this to load the src into the iframe -->
+          <input type="text" class="form-control" id="inputVideoUrl">
+        </div>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/" title="YouTube video player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen></iframe>
         <!-- the src link is not just straight up the url for the youtube page: we just need to grab that id and throw it after embed -->
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Fermentum posuere urna nec tincidunt. Neque gravida in fermentum et sollicitudin ac orci
-          phasellus. Vel turpis nunc eget lorem dolor sed viverra ipsum. Sed arcu non odio euismod. Eu facilisis sed
-          odio
-          morbi quis commodo odio aenean sed. Vitae auctor eu augue ut lectus arcu bibendum at varius. Sodales ut etiam
-          sit amet nisl. Pharetra pharetra massa massa ultricies mi quis hendrerit dolor magna. Habitasse platea
-          dictumst
-          vestibulum rhoncus est pellentesque elit ullamcorper dignissim.
-
-          Lectus vestibulum mattis ullamcorper velit sed ullamcorper morbi tincidunt ornare. Fermentum posuere urna nec
-          tincidunt praesent semper. Quis ipsum suspendisse ultrices gravida dictum. Ornare massa eget egestas purus
-          viverra. Ut venenatis tellus in metus vulputate. Id semper risus in hendrerit gravida rutrum quisque non. Sed
-          risus ultricies tristique nulla. Semper auctor neque vitae tempus quam pellentesque. Ante metus dictum at
-          tempor
-          commodo ullamcorper a lacus. Enim nunc faucibus a pellentesque sit amet. Eu facilisis sed odio morbi quis
-          commodo. Nisi scelerisque eu ultrices vitae. Suspendisse interdum consectetur libero id faucibus nisl
-          tincidunt.
-          Sagittis nisl rhoncus mattis rhoncus urna neque viverra. Aliquam id diam maecenas ultricies mi. Vel pretium
-          lectus quam id leo in vitae. Suscipit tellus mauris a diam maecenas. Sed vulputate mi sit amet mauris commodo
-          quis. Mi eget mauris pharetra et ultrices neque ornare aenean euismod. Id aliquet risus feugiat in ante metus
-          dictum at tempor.</p>
+        <textarea id="inputPageBody"></textarea>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">
+            Hide Page
+          </label>
+        </div>
+        <div id="buttonDiv">
+          <button id="deleteButton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#deletePageModal">Delete Page</button>
+          <button id="saveButton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#savePageModal">Save Page</button>
+        </div>
       </div>
     </main>
     <script src="scripts/jquery.min.js"></script>

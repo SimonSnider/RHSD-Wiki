@@ -50,7 +50,7 @@ h1{
     text-align: center;
     margin-bottom: 25px;
 }
-p{
+#pageBodyText{
     margin-top:25px;
     margin-left: auto;
     margin-right: auto;
@@ -135,7 +135,7 @@ p{
     margin: 10px 0;
 }
 
-#saveButton {
+#saveButton, #cancelButton {
     background-color: darkgrey;
     color: black
 }

@@ -99,6 +99,28 @@ rhit.FbFolderManager = class {
 	}
 }
 
+rhit.FbSingleFolderManager = class {
+	constructor(folderID){
+		this._documentSnapshot = {};
+		this._unsubscribe = null;
+		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_FOLDERS).doc(folderID);
+	}
+	beginListening(changeListener) {
+
+		this._unsubscribe = this._ref.onSnapshot((doc) => {
+			if (doc.exists) {
+				this._documentSnapshot = doc;
+				changeListener();
+			} else {
+				console.log("No doc");
+			}
+		});
+	}
+	get name(){
+		console.log(this._documentSnapshot.get(rhit.FB_KEY_NAME));	
+	}
+}
+
 rhit.FbPageManager = class {
 	constructor() {
 		this._documentSnapshots = [];

@@ -19,7 +19,8 @@ body {
 .navbar>button {
     /* justify-self: end; */
 }
-.navbar> #navButton {
+
+.navbar>#navButton {
     /* justify-self: start; */
 }
 
@@ -44,14 +45,15 @@ body {
 }
 
 
-h1{
+h1 {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
     margin-bottom: 25px;
 }
-p{
-    margin-top:25px;
+
+p {
+    margin-top: 25px;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
@@ -71,24 +73,54 @@ p{
     position: relative;
 }
 
-.folderList{
+.folderList {
     border: 2px;
     border-color: black;
 }
+
 .folderList a {
     color: inherit;
 }
 
-.folderListItem:focus{
+.folderListItem:focus {
     background-color: #a7a7a7;
 }
-.list-group-item{
-    padding-left:0px;
+
+.list-group-item {
+    padding-left: 0px;
 }
 
 .pageList a {
     color: inherit;
 }
-#pageBodyText{
+
+#pageBodyText {
     justify-content: center;
+}
+
+.pageList{
+    padding-left: 0px;
+}
+
+#editPagesListContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.bmd-form-group{
+    padding-top: 0px;
+}
+.form-check-label{
+    font-size: 1.5em;
+    margin:20px 0px 0px 0px;
+}
+
+#hiddenCheckBox{
+    margin:25px 0px 0px 5px;
+    width:30px;
+    height:20px;
+}
+#deleteFolderButton{
+    margin:10px;
+    border-radius: 2px;
 }

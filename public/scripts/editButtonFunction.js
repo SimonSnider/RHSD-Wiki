@@ -1,3 +1,5 @@
+rhit.fbSingleFolderManager = null;
+
 rhit.editFoldersController = class {
     constructor() {
         rhit.fbFolderManager.beginListening(this.populateFoldersList.bind(this));
@@ -71,6 +73,16 @@ rhit.editPagesController = class {
         this.folderID = folderid;
         rhit.fbPageManager.beginListening(this.populatePagesList.bind(this));
         this.populatePagesList();
+        console.log(this.folderID);
+        document.querySelector("#deleteFolderConfirm").onclick = () =>{
+            console.log("hello");
+            rhit.fbFolderManager.delete(this.folderID).then(()=>{
+                window.location.href = `/editFoldersList.html`;
+            });
+        }
+        
+        rhit.fbSingleFolderManager.beginListening(this.populatePagesList.bind(this));
+        // document.querySelector("#folderName").value = rhit.fbSingleFolderManager.name;
     }
 
     populatePagesList() {
@@ -88,8 +100,8 @@ rhit.editPagesController = class {
             newList.appendChild(newPageButton);
 
         }
-        const editBar = this._createBar();
-        newList.appendChild(editBar);
+        // const editBar = this._createBar();
+        // newList.appendChild(editBar);
 
         const oldList = document.querySelector(".pageList");
         oldList.parentElement.appendChild(newList);
@@ -139,6 +151,7 @@ if (document.querySelector("#editPagesListPage")) {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const folderID = urlParams.get("fid");
+    rhit.fbSingleFolderManager = new rhit.FbSingleFolderManager(folderID);
     rhit.editPagesController = new rhit.editPagesController(folderID);
 }
 if (document.querySelector("#editFoldersListPage")) {

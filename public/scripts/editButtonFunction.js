@@ -80,6 +80,9 @@ rhit.editPagesController = class {
                 window.location.href = `/editFoldersList.html`;
             });
         }
+        document.querySelector("#hiddenCheckBox").onclick = () =>{
+            rhit.fbFolderManager.update(this.folderID,rhit.fbSingleFolderManager.name, !rhit.fbSingleFolderManager.hidden);
+        }
         
         rhit.fbSingleFolderManager.beginListening(this.populatePagesList.bind(this));
         // document.querySelector("#folderName").value = rhit.fbSingleFolderManager.name;

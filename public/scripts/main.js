@@ -119,6 +119,9 @@ rhit.FbSingleFolderManager = class {
 	get name(){
 		console.log(this._documentSnapshot.get(rhit.FB_KEY_NAME));	
 	}
+	get hidden(){
+		console.log(this._documentSnapshot.get(rhit.FB_KEY_HIDDEN))
+	}
 }
 
 rhit.FbPageManager = class {

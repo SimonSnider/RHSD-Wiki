@@ -82,6 +82,7 @@ rhit.FbFolderManager = class {
 			console.error("Error updating document: ", error)
 		})
 	}
+	//todo: delete function doesn't currently work
 	delete(id) {
 		docRef = this._ref.doc(id);
 		return docRef.delete().catch((error) => {
@@ -101,7 +102,7 @@ rhit.FbFolderManager = class {
 
 rhit.FbSingleFolderManager = class {
 	constructor(folderID){
-		this._documentSnapshot = {};
+		this._documentSnapshot = null;
 		this._unsubscribe = null;
 		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_FOLDERS).doc(folderID);
 	}
@@ -116,11 +117,27 @@ rhit.FbSingleFolderManager = class {
 			}
 		});
 	}
+	update(name, hidden) {
+		this._ref.update({
+			[rhit.FB_FOLDER_KEY_NAME]: name,
+			[rhit.FB_FOLDER_KEY_HIDDEN]: hidden
+		}).then(() => {
+			console.log("Folder Sucessfully Updated");
+		}).catch((error) => {
+			console.error("Error updating document: ", error)
+		})
+	}
+	delete() {
+		return this._ref.delete().catch((error) => {
+			console.error("Error deleting document: ", error)
+		})
+	}
+	//todo: get getters working
 	get name(){
-		console.log(this._documentSnapshot.get(rhit.FB_KEY_NAME));	
+		return this._documentSnapshot.get(rhit.FB_FOLDER_KEY_NAME);	
 	}
 	get hidden(){
-		console.log(this._documentSnapshot.get(rhit.FB_KEY_HIDDEN))
+		return this._documentSnapshot.get(rhit.FB_FOLDER_KEY_HIDDEN);
 	}
 }
 

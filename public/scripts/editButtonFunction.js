@@ -72,23 +72,26 @@ rhit.editPagesController = class {
     constructor(folderid) {
         this.folderID = folderid;
         rhit.fbPageManager.beginListening(this.populatePagesList.bind(this));
+        rhit.fbSingleFolderManager.beginListening(this.populatePagesList.bind(this));
         this.populatePagesList();
         console.log(this.folderID);
         document.querySelector("#deleteFolderConfirm").onclick = () =>{
             console.log("hello");
-            rhit.fbFolderManager.delete(this.folderID).then(()=>{
+            rhit.fbSingleFolderManager.delete().then(()=>{
                 window.location.href = `/editFoldersList.html`;
             });
         }
-        document.querySelector("#hiddenCheckBox").onclick = () =>{
-            rhit.fbFolderManager.update(this.folderID,rhit.fbSingleFolderManager.name, !rhit.fbSingleFolderManager.hidden);
+        document.querySelector("#savePageButton").onclick = () =>{
+            //TODO: call update method
+            console.log(document.querySelector("#folderName").value);
+            console.log(document.getElementById("hiddenCheckBox").checked);
+            rhit.fbSingleFolderManager.update(document.querySelector("#folderName").value, document.querySelector("#hiddenCheckBox").checked);
         }
         
-        rhit.fbSingleFolderManager.beginListening(this.populatePagesList.bind(this));
-        // document.querySelector("#folderName").value = rhit.fbSingleFolderManager.name;
     }
-
+    
     populatePagesList() {
+        // document.querySelector("#folderName").value = rhit.fbSingleFolderManager.name;
         const pages = rhit.fbPageManager.getPagesByFolder(this.folderID);
         const newList = htmlToElement('<ul class="pageList"></ul>');
         for (let i = 0; i < pages.length; i++) {
@@ -109,6 +112,7 @@ rhit.editPagesController = class {
         const oldList = document.querySelector(".pageList");
         oldList.parentElement.appendChild(newList);
         oldList.remove();
+
     }
 
     _createPageButton(page) {

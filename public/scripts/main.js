@@ -27,6 +27,14 @@ function htmlToElement(html) {
 	return template.content.firstChild;
 }
 
+function getVideoEmbedCode(videoLink) {
+	//TODO: get video embed code out of the videoLink string
+	const urlStart = "https://www.youtube.com/embed/";
+	const urlParams = new URLSearchParams(videoLink);
+	const vidID = urlParams.get("https://www.youtube.com/watch?v");
+	return urlStart + vidID;
+}
+
 rhit.Folder = class {
 	constructor(id, name, hidden) {
 		this.id = id;
@@ -52,13 +60,13 @@ rhit.FbFolderManager = class {
 		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_FOLDERS);
 	}
 	add(name, hidden) {
-		return this._ref.add({
+		this._ref.add({
 			[rhit.FB_FOLDER_KEY_NAME]: name,
 			[rhit.FB_FOLDER_KEY_HIDDEN]: hidden,
 		})
-			// .then(function (docRef) {
-			// 	console.log("Document written with ID: ", docRef.id);
-			// })
+			.then(function (docRef) {
+				console.log("Document written with ID: ", docRef.id);
+			})
 			.catch(function (error) {
 				console.error("Error adding document: ", error);
 			})
@@ -147,16 +155,16 @@ rhit.FbPageManager = class {
 		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_PAGES);
 	}
 	add(folderID, name, videoLink, body, hidden) {
-		return this._ref.add({
+		this._ref.add({
 			[rhit.FB_PAGE_KEY_FOLDER_ID]: folderID,
 			[rhit.FB_PAGE_KEY_NAME]: name,
 			[rhit.FB_PAGE_KEY_VIDEO_LINK]: videoLink,
 			[rhit.FB_PAGE_KEY_BODY]: body,
 			[rhit.FB_PAGE_KEY_HIDDEN]: hidden
 		})
-			// .then(function (docRef) {
-			// 	console.log("Document written with ID: ", docRef.id);
-			// })
+			.then(function (docRef) {
+				console.log("Document written with ID: ", docRef.id);
+			})
 			.catch(function (error) {
 				console.error("Error adding document: ", error);
 			})
@@ -219,6 +227,7 @@ rhit.FbPageManager = class {
 
 rhit.FbSinglePageManager = class {
 	constructor(pageId) {
+		this.pageId = pageId;
 		console.log("singlePageManager created");
 		this._documentSnapshot = null;
 		this._unsubscribe = null;
@@ -237,9 +246,8 @@ rhit.FbSinglePageManager = class {
 		})
 	}
 	stopListening() { this._unsubscribe(); }
-	update(folderID, name, videoLink, body, hidden) {
-		this._ref.update({
-			[rhit.FB_PAGE_KEY_FOLDER_ID]: folderID,
+	update(name, videoLink, body, hidden) {
+		return this._ref.update({
 			[rhit.FB_PAGE_KEY_NAME]: name,
 			[rhit.FB_PAGE_KEY_VIDEO_LINK]: videoLink,
 			[rhit.FB_PAGE_KEY_BODY]: body,
@@ -250,9 +258,8 @@ rhit.FbSinglePageManager = class {
 			console.error("Error updating document: ", error)
 		})
 	}
-	delete(id) {
-		docRef = this._ref.doc(id);
-		return docRef.delete().catch((error) => {
+	delete() {
+		return this._ref.delete().catch((error) => {
 			console.error("Error deleting document: ", error)
 		})
 	}
@@ -268,7 +275,12 @@ rhit.FbSinglePageManager = class {
 	get body() {
 		return this._documentSnapshot.get(rhit.FB_PAGE_KEY_BODY);
 	}
-	
+	get folderId() {
+		return this._documentSnapshot.get(rhit.FB_PAGE_KEY_FOLDER_ID);
+	}
+	get hidden() {
+		return this._documentSnapshot.get(rhit.FB_PAGE_KEY_HIDDEN);
+	}
 }
 
 rhit.FbOfficerManager = class {
@@ -337,17 +349,52 @@ rhit.PageDetailController = class {
 
 	updatePage() {
 		document.querySelector("#pageTitle").innerHTML = rhit.fbSinglePageManager.name
-		document.querySelector("#videoEmbed").src = this.getVideoEmbedCode(rhit.fbSinglePageManager.videoLink);
+		document.querySelector("#videoEmbed").src = getVideoEmbedCode(rhit.fbSinglePageManager.videoLink);
 		document.querySelector("#pageBodyText").innerHTML = rhit.fbSinglePageManager.body
 	}
+}
 
-	getVideoEmbedCode(videoLink) {
-		//TODO: get video embed code out of the videoLink string
-		const urlStart = "https://www.youtube.com/embed/";
-		const urlParams = new URLSearchParams(videoLink);
-		const vidID = urlParams.get("https://www.youtube.com/watch?v");
-		return urlStart + vidID;
+rhit.EditorController = class {
+	constructor() {
+		this.initialized = false;
+		console.log("Editor controller created");
+		const inputVideoUrl = document.querySelector("#inputVideoUrl");
+		inputVideoUrl.addEventListener('input', () => {
+			document.querySelector("#videoEmbed").src = getVideoEmbedCode(inputVideoUrl.value);
+		});
+
+		rhit.fbSinglePageManager.beginListening(this.initializeFields.bind(this))
 	}
+
+	initializeFields() {
+		if (!this.initialized) {
+			document.querySelector("#inputPageName").value = rhit.fbSinglePageManager.name;
+			document.querySelector("#inputVideoUrl").value = rhit.fbSinglePageManager.videoLink;
+			document.querySelector("#inputPageBody").value = rhit.fbSinglePageManager.body;
+			document.querySelector("#hiddenCheck").checked = rhit.fbSinglePageManager.hidden;
+			document.querySelector("#videoEmbed").src = getVideoEmbedCode(rhit.fbSinglePageManager.videoLink)
+			document.querySelector("#cancelButton").onclick = (event) => {
+				window.location.href = `/editPagesList.html?fid=${rhit.fbSinglePageManager.folderId}`
+			}
+			document.querySelector("#saveButton").onclick = (event) => {
+				const name = document.querySelector("#inputPageName").value;
+				const videoLink = document.querySelector("#inputVideoUrl").value;
+				const body = document.querySelector("#inputPageBody").value;
+				const hidden = document.querySelector("#hiddenCheck").checked;
+				rhit.fbSinglePageManager.update(name, videoLink, body, hidden).then(() => {
+					window.location.href = `/?id=${rhit.fbSinglePageManager.pageId}`
+				});
+			}
+			document.querySelector("#submitDeletePage").onclick = (event) => {
+				rhit.fbSinglePageManager.delete().then(() => {
+					window.location.href = `/editPagesList.html?fid=${rhit.fbSinglePageManager.folderId}`
+				})
+			}
+			this.initialized = true;
+		}
+	}
+
+	
 }
 
 
@@ -362,10 +409,17 @@ rhit.main = function () {
 		new rhit.NavigatorController();
 	}
 	if (document.querySelector("#pageDetail")) {
-		pageId = urlParams.get("id");
+		const pageId = urlParams.get("id");
 		if (pageId) {
 			rhit.fbSinglePageManager = new rhit.FbSinglePageManager(pageId);
 			new rhit.PageDetailController();
+		}
+	}
+	if (document.querySelector("#editorPage")) {
+		const pageId = urlParams.get("pid");
+		if (pageId) {
+			rhit.fbSinglePageManager = new rhit.FbSinglePageManager(pageId);
+			new rhit.EditorController(pageId);
 		}
 	}
 };

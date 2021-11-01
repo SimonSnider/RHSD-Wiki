@@ -236,6 +236,9 @@ rhit.FbSinglePageManager = class {
 	get folderId() {
 		return this._documentSnapshot.get(rhit.FB_PAGE_KEY_FOLDER_ID);
 	}
+	get hidden() {
+		return this._documentSnapshot.get(rhit.FB_PAGE_KEY_HIDDEN);
+	}
 }
 
 rhit.FbOfficerManager = class {
@@ -326,6 +329,7 @@ rhit.EditorController = class {
 			document.querySelector("#inputPageName").value = rhit.fbSinglePageManager.name;
 			document.querySelector("#inputVideoUrl").value = rhit.fbSinglePageManager.videoLink;
 			document.querySelector("#inputPageBody").value = rhit.fbSinglePageManager.body;
+			document.querySelector("#hiddenCheck").checked = rhit.fbSinglePageManager.hidden;
 			document.querySelector("#videoEmbed").src = getVideoEmbedCode(rhit.fbSinglePageManager.videoLink)
 			document.querySelector("#cancelButton").onclick = (event) => {
 				window.location.href = `/editPagesList.html?fid=${rhit.fbSinglePageManager.folderId}`

@@ -72,7 +72,7 @@ rhit.editPagesController = class {
     constructor(folderid) {
         this.folderID = folderid;
         rhit.fbPageManager.beginListening(this.populatePagesList.bind(this));
-        rhit.fbSingleFolderManager.beginListening(this.populatePagesList.bind(this));
+        rhit.fbSingleFolderManager.beginListening(this.populateFolderElements.bind(this));
         this.populatePagesList();
         console.log(this.folderID);
         document.querySelector("#deleteFolderConfirm").onclick = () =>{
@@ -89,9 +89,13 @@ rhit.editPagesController = class {
         }
         
     }
+    populateFolderElements(){
+        document.querySelector("#folderName").value = rhit.fbSingleFolderManager.name;
+        document.querySelector("#hiddenCheckBox").checked = rhit.fbSingleFolderManager.hidden;
+
+    }
     
     populatePagesList() {
-        // document.querySelector("#folderName").value = rhit.fbSingleFolderManager.name;
         const pages = rhit.fbPageManager.getPagesByFolder(this.folderID);
         const newList = htmlToElement('<ul class="pageList"></ul>');
         for (let i = 0; i < pages.length; i++) {

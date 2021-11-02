@@ -111,7 +111,8 @@ h1 {
 .bmd-form-group{
     padding-top: 0px;
 }
-.form-check-label{
+
+#editPagesListFormCheckLabel{
     font-size: 1.5em;
     margin:20px 0px 0px 0px;
 }

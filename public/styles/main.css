@@ -77,6 +77,8 @@ h1 {
 .folderList {
     border: 2px;
     border-color: black;
+    border-style: solid;
+    width:45vh;
 }
 
 .folderList a {
@@ -87,9 +89,9 @@ h1 {
     background-color: #a7a7a7;
 }
 
-.list-group-item {
+/* .list-group-item {
     padding-left: 0px;
-}
+} */
 
 .pageList a {
     color: inherit;
@@ -101,6 +103,9 @@ h1 {
 
 .pageList{
     padding-left: 0px;
+    justify-content: left;
+    margin-bottom: 0px;
+    padding-bottom: 16px;
 }
 
 #editPagesListContent {
@@ -176,4 +181,21 @@ h1 {
 #deleteButton {
     background-color: darkgrey;
     color: red
+}
+
+#hideFolderCheckBox{
+    padding:0px;
+}
+
+ #titleEditPages, #addNewPage, .pageList{
+    padding:2px 10px 2px 10px;
+    border-style:solid;
+    border-radius: 2px;
+    border-color:black;
+    width:45vh;
+}
+
+
+#addNewFolder{
+    width:45vh;
 }

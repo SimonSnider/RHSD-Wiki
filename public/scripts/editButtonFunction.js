@@ -20,8 +20,8 @@ rhit.editFoldersController = class {
             newList.appendChild(newFolderButton);
 
         }
-        const editBar = this._createBar();
-        newList.appendChild(editBar);
+        // const editBar = this._createBar();
+        // newList.appendChild(editBar);
 
         const oldList = document.querySelector(".folderList");
         oldList.parentElement.appendChild(newList);
@@ -81,11 +81,16 @@ rhit.editPagesController = class {
                 window.location.href = `/editFoldersList.html`;
             });
         }
-        document.querySelector("#savePageButton").onclick = () =>{
+        document.querySelector("#changeFolderNameButton").onclick = () =>{
+            // console.log("hello");
+            rhit.fbSingleFolderManager.update(document.querySelector("#folderName").value, rhit.fbSingleFolderManager.hidden);
+
+        }
+        document.querySelector("#hiddenCheckBox").onclick = () =>{
             //TODO: call update method
-            console.log(document.querySelector("#folderName").value);
-            console.log(document.getElementById("hiddenCheckBox").checked);
-            rhit.fbSingleFolderManager.update(document.querySelector("#folderName").value, document.querySelector("#hiddenCheckBox").checked);
+            // console.log(document.querySelector("#folderName").value);
+            // console.log(document.getElementById("hiddenCheckBox").checked);
+            rhit.fbSingleFolderManager.update(rhit.fbSingleFolderManager.name, document.querySelector("#hiddenCheckBox").checked);
         }
         
     }

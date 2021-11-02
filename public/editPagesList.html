@@ -2,97 +2,109 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
-    <link rel="stylesheet" href="styles/bootstrap-material-design.min.css">
-    <link rel="stylesheet" href="styles/main.css">
-    <title>RHSD Wiki</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+  <link rel="stylesheet" href="styles/bootstrap-material-design.min.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <title>RHSD Wiki</title>
 </head>
 
 <body>
-    <div id="editPagesListPage" class="bmd-layout-container bmd-drawer-f-l">
-        <header class="bmd-layout-header">
-            <div class="navbar navbar-dark fixed-top">
-                <button id="navButton" type="button" class="navbar-toggler hidden-lg-up"
-                data-toggle="drawer" data-target="#leftNavigator" aria-expanded="false"><i class="material-icons">menu</i></button>
-                <a class="navbar-brand" href="/">RHSD Wiki</a>
-                <button id="editButton" type="button" class="btn btn-light"><i class="material-icons">edit</i></button>
-                <button id="searchButton" type="button" class="btn btn-light"><i class="material-icons">search</i></button>
-                <button id="profileButton" type="button" class="btn btn-light"><i class="material-icons">person</i></button>
-            </div>
-        </header>
-        <div id="leftNavigator" class="bmd-layout-drawer sidenav">
-            <ul class="directory-list"></ul>
-        </div>
-        <main id = editPagesListContent class="bmd-layout-content">
-            <div id="pageDetail" class="container page-container">
-                <div>
-                    <h1>Pages List for:</h1>
-                        <form class="form-group">
-                          <input type="text" class="form-control" id="folderName">
-                        </form>
-                    
-                </div>
-                <ul class="pageList">
-                    <!-- <a href="#" class="list-group-item disabled">Disabled item</a>
-                    <a href="#" class="list-group-item disabled">Disabled item</a>
-                    <a href="#" class="list-group-item active">Active link item</a>
-                    <a href="#" class="list-group-item disabled">Disabled item</a> -->
-                </ul>
-            </div>
-            <div class="input-group mb-3">
-                <input type="text" id="pageName" class="form-control" placeholder="New Page Name"
-                 aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                         <button id = "createPageButton" class="btn btn-outline-secondary" type="button"><i class="material-icons">done</i></button>
-                    </div>
-            </div>
-            <div class="form-check">
-                <label id="editPagesListFormCheckLabel" class="form-check-label" for="exampleCheck1">Check to Hide Folder</label>
-                <input type="checkbox" class="form-check-input" id="hiddenCheckBox">
-            </div>
-            <div class = form-check>
-              <label class="form-check-label" for="exampleCheck1">Save changes to folder</label>
-              <button id = "savePageButton" class="btn btn-outline-secondary" type="button"><i class="material-icons">done</i></button>
-            </div>
-            <button id="deleteFolderButton" data-toggle=modal data-target=#deleteFolderModal type="button" class="btn btn-outline-danger">Delete Folder?</button>
-        </main>
-
-        <div class="modal fade" id="deleteFolderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this Folder + it's contents?</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  Folder and all contained pages will be deleted and unrecoverable
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
-                  <button id="deleteFolderConfirm" type="button" class="btn btn-danger">DELETE</button>
-                </div>
-              </div>
+  <div id="editPagesListPage" class="bmd-layout-container bmd-drawer-f-l">
+    <header class="bmd-layout-header">
+      <div class="navbar navbar-dark fixed-top">
+        <button id="navButton" type="button" class="navbar-toggler hidden-lg-up" data-toggle="drawer"
+          data-target="#leftNavigator" aria-expanded="false"><i class="material-icons">menu</i></button>
+        <a class="navbar-brand" href="/">RHSD Wiki</a>
+        <button id="editButton" type="button" class="btn btn-light"><i class="material-icons">edit</i></button>
+        <button id="searchButton" type="button" class="btn btn-light"><i class="material-icons">search</i></button>
+        <button id="profileButton" type="button" class="btn btn-light"><i class="material-icons">person</i></button>
+      </div>
+    </header>
+    <div id="leftNavigator" class="bmd-layout-drawer sidenav">
+      <ul class="directory-list"></ul>
+    </div>
+    <main id=editPagesListContent class="bmd-layout-content">
+      <div id="pageDetail" class="container page-container">
+        <div id="titleEditPages">
+          <h1>Pages List for:</h1>
+          <div class="input-group mb-3">
+            <input type="text" id="folderName" class="form-control" placeholder="New Page Name"
+              aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button id="changeFolderNameButton" class="btn btn-outline-secondary" type="button"><i
+                  class="material-icons">done</i></button>
             </div>
           </div>
 
-        <script src="scripts/jquery.min.js"></script>
-        <script src="scripts/popper.js"></script>
-        <script src="scripts/bootstrap-material-design.js"></script>
-        <script>
-            $("body").bootstrapMaterialDesign();
-        </script>
-        <script src="/__/firebase/7.18.0/firebase-app.js"></script>
-        <script src="/__/firebase/7.18.0/firebase-analytics.js"></script>
-        <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
-        <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
-        <script src="/__/firebase/init.js"></script>
-        <script src="scripts/main.js"></script>
-        <script src="scripts/navigator.js"></script>
-        <script src="scripts/editButtonFunction.js"></script>
+        </div>
+
+
+
+        <ul class="pageList">
+          <!-- <a href="#" class="list-group-item disabled">Disabled item</a>
+                    <a href="#" class="list-group-item disabled">Disabled item</a>
+                    <a href="#" class="list-group-item active">Active link item</a>
+                    <a href="#" class="list-group-item disabled">Disabled item</a> -->
+        </ul>
+      </div>
+      <div id="addNewPage" class="input-group mb-3">
+        <input type="text" id="pageName" class="form-control" placeholder="Add New Page"
+          aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+          <button id="createPageButton" class="btn btn-outline-secondary" type="button"><i
+              class="material-icons">add</i></button>
+        </div>
+      </div>
+
+
+
+      <div id="hideFolderCheckBox" class="form-check">
+        <label id="editPagesListFormCheckLabel" class="form-check-label" for="exampleCheck1">Check to Hide
+          Folder</label>
+        <input type="checkbox" class="form-check-input" id="hiddenCheckBox">
+      </div>
+      <button id="deleteFolderButton" data-toggle=modal data-target=#deleteFolderModal type="button"
+        class="btn btn-outline-danger">Delete Folder?</button>
+    </main>
+
+    <div class="modal fade" id="deleteFolderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this Folder + it's contents?
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Folder and all contained pages will be deleted and unrecoverable
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
+            <button id="deleteFolderConfirm" type="button" class="btn btn-danger">DELETE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/popper.js"></script>
+    <script src="scripts/bootstrap-material-design.js"></script>
+    <script>
+      $("body").bootstrapMaterialDesign();
+    </script>
+    <script src="/__/firebase/7.18.0/firebase-app.js"></script>
+    <script src="/__/firebase/7.18.0/firebase-analytics.js"></script>
+    <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
+    <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/navigator.js"></script>
+    <script src="scripts/editButtonFunction.js"></script>
 
 </body>
 

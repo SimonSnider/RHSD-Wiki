@@ -115,6 +115,8 @@ h1 {
 }
 .bmd-form-group{
     padding-top: 0px;
+    justify-content: center;
+    display: flex;
 }
 
 #editPagesListFormCheckLabel{

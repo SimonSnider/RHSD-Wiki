@@ -196,6 +196,13 @@ h1 {
     border-color:black;
     width:45vh;
 }
+#addNewPage{
+    border-top:0px;
+}
+.pageList{
+    border-bottom: 0px;
+    border-top: 0px;
+}
 
 
 #addNewFolder{

@@ -378,6 +378,7 @@ rhit.EditorController = class {
 				window.location.href = `/editPagesList.html?fid=${rhit.fbSinglePageManager.folderId}`
 			}
 
+			// https://ckeditor.com/docs/ckeditor5/latest/api/module_editor-classic_classiceditor-ClassicEditor.html#function-getData
 			ClassicEditor
 			.create( document.querySelector( '#editor' ), {
 				initialData: `${rhit.fbSinglePageManager.body}`

@@ -40,7 +40,7 @@
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen id="videoEmbed"></iframe>
         <!-- the src link is not just straight up the url for the youtube page: we just need to grab that id and throw it after embed -->
-        <textarea id="inputPageBody"></textarea>
+        <textarea id="editor"></textarea>
         <div class="form-check">
           <input class="form-check-input" type="checkbox" value="" id="hiddenCheck">
           <label class="form-check-label" for="hiddenCheck">
@@ -87,6 +87,11 @@
     <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
     <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
     <script src="/__/firebase/init.js"></script>
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
+    <!-- <script src="https://cdn.tiny.cloud/1/gsttoeivdpq6k5hhpvq36d9c6lgxm31wt8hxijew910bu1tz/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> -->
+    
+
     <script src="scripts/main.js"></script>
     <script src="scripts/navigator.js"></script>
     <script src="scripts/editButtonFunction.js"></script>

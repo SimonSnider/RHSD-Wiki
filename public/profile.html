@@ -29,13 +29,12 @@
     </div>
 
     <main class="bmd-layout-content">
-      <div id="pageDetail" class="container page-container">
-        <h1 id="pageTitle">Welcome!</h1>
-        <iframe width="560" height="315" src="" title="YouTube video player"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen id="videoEmbed" hidden></iframe>
-        <!-- the src link is not just straight up the url for the youtube page: we just need to grab that id and throw it after embed -->
-        <p id="pageBodyText">Welcome to the Rose-Hulman Swing Dance Club Wiki!</p>
+      <div id="profilePage" class="container page-container">
+            <h1>Profile</h1>
+            <h2 id="usernameText">Username:</h2>
+            <h2 id="memberStatusText">Member status:</h2>
+            <button id="officerListButton" type="button" class="btn normalButton">View officer list</button>
+            <button id="signOutButton" type="button" class="btn normalButton">Sign Out</button>
       </div>
     </main>
 
@@ -49,7 +48,6 @@
     <script src="/__/firebase/7.18.0/firebase-analytics.js"></script>
     <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
     <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
-    <script src="scripts/rosefire.min.js"></script>
     <script src="/__/firebase/init.js"></script>
     <script src="scripts/main.js"></script>
     <script src="scripts/navigator.js"></script>

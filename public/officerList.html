@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+  <link rel="stylesheet" href="styles/bootstrap-material-design.min.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <title>RHSD Wiki</title>
+</head>
+
+<body>
+  <div id="mainPage" class="bmd-layout-container bmd-drawer-f-l">
+    <header class="bmd-layout-header">
+      <div class="navbar navbar-dark fixed-top">
+        <button id="navButton" type="button" class="navbar-toggler hidden-lg-up"
+                data-toggle="drawer" data-target="#leftNavigator" aria-expanded="false"><i class="material-icons">menu</i></button>
+        <a class="navbar-brand" href="/">RHSD Wiki</a>
+        <button id="editButton" type="button" class="btn btn-light"><i class="material-icons">edit</i></button>
+        <button id="searchButton" type="button" class="btn btn-light"><i class="material-icons">search</i></button>
+        <button id="profileButton" type="button" class="btn btn-light"><i class="material-icons">person</i></button>
+      </div>
+    </header>
+    
+    
+    <div id="leftNavigator" class="bmd-layout-drawer sidenav">
+      <ul class="directory-list"></ul>
+    </div>
+
+    <main class="bmd-layout-content">
+      <div id="officerListPage" class="container page-container">
+        <h1>List of Officers</h1>
+        <div id="officerListDiv">
+          <ul>
+          </ul>
+        </div>
+        <button id="addOfficerButton" class="btn normalButton" data-toggle="modal" data-target="#addOfficerModal">Add New Officer</button>
+        <button id="removeOfficerButton" class="btn dangerButton" data-toggle="modal" data-target="#removeOfficerModal">Remove Officer</button>
+        <button id="transferAdminButton" class="btn dangerButton" data-toggle="modal" data-target="#transferAdminModal">Transfer Admin</button>
+
+
+      </div>
+    </main>
+    <div class="modal fade" id="addOfficerModal" tabindex="-1" role="dialog" aria-labelledby="addOfficerModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addOfficerModalLabel">Add Officer</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Enter the Rose-Hulman username of the new officer</p>
+            <div class="form-group bmd-form-group">
+              <label for="inputAddOfficerUsername" class="bmd-label-floating">Username</label>
+              <input type="text" class="form-control" id="inputAddOfficerUsername">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
+            <button id="submitAddOfficer" type="button" data-dismiss="modal" class="btn btn-primary">CONFIRM</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="removeOfficerModal" tabindex="-1" role="dialog" aria-labelledby="removeOfficerModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="removeOfficerModalLabel">Remove Officer</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Enter the Rose-Hulman username of the officer you wish to remove.</p>
+            <div class="form-group bmd-form-group">
+              <label for="inputRemoveOfficerUsername" class="bmd-label-floating">Username</label>
+              <input type="text" class="form-control" id="inputRemoveOfficerUsername">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
+            <button id="submitRemoveOfficer" type="button" data-dismiss="modal" class="btn btn-primary">CONFIRM</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="transferAdminModal" tabindex="-1" role="dialog" aria-labelledby="transferAdminModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="transferAdminModalLabel">Transfer Admin Privelages</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Enter the Rose-Hulman username of the officer you wish to transfer admin privelages to. This action cannot be undone.</p>
+            <div class="form-group bmd-form-group">
+              <label for="inputTransferAdminUsername" class="bmd-label-floating">Username</label>
+              <input type="text" class="form-control" id="inputTransferAdminUsername">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
+            <button id="submitTransferAdmin" type="button" data-dismiss="modal" class="btn btn-primary">CONFIRM</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/popper.js"></script>
+    <script src="scripts/bootstrap-material-design.js"></script>
+    <script>
+      $("body").bootstrapMaterialDesign();
+    </script>
+    <script src="/__/firebase/7.18.0/firebase-app.js"></script>
+    <script src="/__/firebase/7.18.0/firebase-analytics.js"></script>
+    <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
+    <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
+    <script src="scripts/rosefire.min.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/navigator.js"></script>
+    <script src="scripts/editButtonFunction.js"></script>
+
+  </div>
+
+</body>
+
+</html>

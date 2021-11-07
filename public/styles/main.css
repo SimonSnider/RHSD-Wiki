@@ -168,12 +168,26 @@ h1 {
     margin: 10px 0;
 }
 
-#saveButton, #cancelButton {
+.normalButton {
     background-color: darkgrey;
     color: black
 }
 
-#deleteButton {
+.dangerButton {
     background-color: darkgrey;
     color: red
+}
+
+#profilePage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#officerListPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

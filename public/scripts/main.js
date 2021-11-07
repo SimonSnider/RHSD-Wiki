@@ -320,7 +320,8 @@ rhit.FbOfficerManager = class {
 	}
 	update(id, admin) {
 		return this._ref.doc(id).update({
-			
+			[rhit.FB_OFFICER_KEY_USERNAME]: id,
+			[rhit.FB_OFFICER_KEY_ADMIN]: admin,
 		}).then(() => {
 			console.log("Officer Sucessfully Updated");
 		}).catch((error) => {
@@ -336,6 +337,15 @@ rhit.FbOfficerManager = class {
 	getOfficerAtIndex(index) {
 		let doc = this._documentSnapshots[index]
 		return new rhit.Officer(doc.id, doc.get(rhit.FB_OFFICER_KEY_USERNAME), doc.get(rhit.FB_OFFICER_KEY_ADMIN))
+	}
+
+	getOfficerByID(uid) {
+		for (let doc of this._documentSnapshots) {
+			if (doc.id == uid) {
+				return new rhit.Officer(doc.id, doc.get(rhit.FB_OFFICER_KEY_USERNAME), doc.get(rhit.FB_OFFICER_KEY_ADMIN))
+			}
+		}
+		return null
 	}
 
 	get length() {
@@ -511,12 +521,13 @@ rhit.FbAuthManager = class {
 		return !!this._documentSnapshot
 	}
 	get isAdmin() {
-		return this._documentSnapshot.get(rhit.FB_OFFICER_KEY_ADMIN);
+		return this.isOfficer ? this._documentSnapshot.get(rhit.FB_OFFICER_KEY_ADMIN) : false;
 	}
 }
 
 rhit.OfficerListPageController = class {
 	constructor() {
+		console.log("officer list page controller created");
 		document.querySelector("#submitAddOfficer").onclick = (event) => {
 			let username = document.querySelector("#inputAddOfficerUsername").value
 			document.querySelector("#inputAddOfficerUsername").value = ""
@@ -526,16 +537,33 @@ rhit.OfficerListPageController = class {
 		document.querySelector("#submitRemoveOfficer").onclick = (event) => {
 			let username = document.querySelector("#inputRemoveOfficerUsername").value
 			document.querySelector("#inputRemoveOfficerUsername").value = ""
-			// rhit.fbOfficerManager.delete(username)
-			console.log('username :>> ', username);
+			let officer = rhit.fbOfficerManager.getOfficerByID(username)
+			if (officer) {
+				if (officer.admin) {
+					console.log("You cannot delete the admin");
+				} else {
+					rhit.fbOfficerManager.delete(username)
+				}
+			} else {
+				console.log("officer does not exist");
+			}
 		}
 		document.querySelector("#submitTransferAdmin").onclick = (event) => {
 			let username = document.querySelector("#inputTransferAdminUsername").value
 			document.querySelector("#inputTransferAdminUsername").value = ""
-			// rhit.fbOfficerManager.update(username, this.fbAuthManager.uid)
-			console.log('username :>> ', username);
+			rhit.fbOfficerManager.update(username, true)
+			rhit.fbOfficerManager.update(rhit.fbAuthManager.uid, false)
 		}
-		
+		rhit.fbAuthManager.beginAuthListening(() => {
+			rhit.fbAuthManager.beginOfficerListening(rhit.fbAuthManager.uid, () => {
+				if (rhit.fbAuthManager.isAdmin) {
+					document.querySelector("#addOfficerButton").style.display = "flex"
+					document.querySelector("#removeOfficerButton").style.display = "flex"
+					document.querySelector("#transferAdminButton").style.display = "flex"
+				}
+				
+			})
+		})
 		rhit.fbOfficerManager.beginListening(this.updateView.bind(this))
 	}
 
@@ -543,8 +571,7 @@ rhit.OfficerListPageController = class {
 		const newList = htmlToElement('<ul></ul>')
 		for (let i = 0; i < rhit.fbOfficerManager.length; i++) {
 			let officer = rhit.fbOfficerManager.getOfficerAtIndex(i);
-			
-			const newOfficerItem = this._createOfficerItem(officer.username);
+			const newOfficerItem = this._createOfficerItem(officer.username + (officer.admin ? " (Admin)" : ""));
 			newList.appendChild(newOfficerItem)
 		}
 
@@ -599,13 +626,17 @@ rhit.ProfilePageController = class {
 rhit.main = function () {
 	console.log("Ready");
 	const urlParams = new URLSearchParams(window.location.search);
-	console.log(urlParams.keys().next());
 	rhit.fbFolderManager = new rhit.FbFolderManager();
 	rhit.fbPageManager = new rhit.FbPageManager();
 	rhit.fbAuthManager = new rhit.FbAuthManager();
 	rhit.fbAuthManager.beginAuthListening(() => {
 		console.log("isSignedIn = ", rhit.fbAuthManager.isSignedIn);
-
+		if (rhit.fbAuthManager.isSignedIn) {
+			rhit.fbAuthManager.beginOfficerListening(rhit.fbAuthManager.uid, () => {
+				console.log("displaying edit button");
+				document.querySelector("#editButton").style.display = "flex"
+			})
+		}
 	})
 	document.querySelector("#profileButton").onclick = (event) => {
 		if (rhit.fbAuthManager.isSignedIn) {

@@ -60,13 +60,13 @@ rhit.FbFolderManager = class {
 		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_FOLDERS);
 	}
 	add(name, hidden) {
-		this._ref.add({
+		return this._ref.add({
 			[rhit.FB_FOLDER_KEY_NAME]: name,
 			[rhit.FB_FOLDER_KEY_HIDDEN]: hidden,
 		})
-			.then(function (docRef) {
-				console.log("Document written with ID: ", docRef.id);
-			})
+			// .then(function (docRef) {
+			// 	console.log("Document written with ID: ", docRef.id);
+			// })
 			.catch(function (error) {
 				console.error("Error adding document: ", error);
 			})
@@ -155,16 +155,16 @@ rhit.FbPageManager = class {
 		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_PAGES);
 	}
 	add(folderID, name, videoLink, body, hidden) {
-		this._ref.add({
+		return this._ref.add({
 			[rhit.FB_PAGE_KEY_FOLDER_ID]: folderID,
 			[rhit.FB_PAGE_KEY_NAME]: name,
 			[rhit.FB_PAGE_KEY_VIDEO_LINK]: videoLink,
 			[rhit.FB_PAGE_KEY_BODY]: body,
 			[rhit.FB_PAGE_KEY_HIDDEN]: hidden
 		})
-			.then(function (docRef) {
-				console.log("Document written with ID: ", docRef.id);
-			})
+			// .then(function (docRef) {
+			// 	console.log("Document written with ID: ", docRef.id);
+			// })
 			.catch(function (error) {
 				console.error("Error adding document: ", error);
 			})

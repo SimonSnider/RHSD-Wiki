@@ -5,6 +5,18 @@ rhit.editFoldersController = class {
         rhit.fbFolderManager.beginListening(this.populateFoldersList.bind(this));
         this.populateFoldersList();
 
+
+        document.querySelector("#createFolderButton").onclick = (event) => {
+            const name = document.querySelector("#folderName").value;
+            console.log(name);
+            // rhit.fbFolderManager.update(editBar.querySelector("#folderName").value,false);
+            // console.log(rhit.fbFolderManager.docRef.id);
+            this._createNewFolder(name);
+
+
+
+        };
+
     }
 
     populateFoldersList() {
@@ -92,6 +104,14 @@ rhit.editPagesController = class {
             // console.log(document.getElementById("hiddenCheckBox").checked);
             rhit.fbSingleFolderManager.update(rhit.fbSingleFolderManager.name, document.querySelector("#hiddenCheckBox").checked);
         }
+        document.querySelector("#createPageButton").onclick = (event) => {
+            const name = document.querySelector("#pageName").value;
+            console.log(name);
+            // rhit.fbFolderManager.update(editBar.querySelector("#folderName").value,false);
+            // console.log(rhit.fbFolderManager.docRef.id);
+
+            rhit.editPagesController._setNewPage(name);
+        }
         
     }
     populateFolderElements(){
@@ -117,6 +137,7 @@ rhit.editPagesController = class {
         }
         // const editBar = this._createBar();
         // newList.appendChild(editBar);
+
 
         const oldList = document.querySelector(".pageList");
         oldList.parentElement.appendChild(newList);
@@ -155,7 +176,8 @@ rhit.editPagesController = class {
         //     [rhit.FB_PAGE_KEY_FOLDER_ID]: new URLSearchParams(window.location.search).get("fid")
         // });
         // const b = await a;
-        rhit.fbPageManager.add(new URLSearchParams(window.location.search).get("fid"),name,"","",false).then( (docRef) => {
+        rhit.fbPageManager.add(new URLSearchParams(window.location.search).get("fid"),name,"","",false)
+        .then( (docRef) => {
             window.location.href = `/editor.html?pid=${docRef.id}`;
 
         });

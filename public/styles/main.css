@@ -175,12 +175,12 @@ h1 {
     margin: 10px 0;
 }
 
-#saveButton, #cancelButton {
+.normalButton {
     background-color: darkgrey;
     color: black
 }
 
-#deleteButton {
+.dangerButton {
     background-color: darkgrey;
     color: red
 }
@@ -207,4 +207,21 @@ h1 {
 
 #addNewFolder{
     width:45vh;
+}
+#profilePage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#officerListPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#editButton, #addOfficerButton, #removeOfficerButton, #transferAdminButton {
+    display: none;
 }

@@ -18,7 +18,7 @@ rhit.fbFolderManager = null;
 rhit.fbPageManager = null;
 rhit.fbOfficerManager = null;
 rhit.fbSinglePageManager = null;
-
+rhit.fbAuthManager = null;
 
 function htmlToElement(html) {
 	var template = document.createElement('template');
@@ -51,6 +51,14 @@ rhit.Page = class {
 		this.body = body;
 		this.videoLink = videoLink;
 		this.folderID = folderID;
+	}
+}
+
+rhit.Officer = class {
+	constructor(id, username, admin) {
+		this.id = id
+		this.username = username
+		this.admin = admin
 	}
 }
 
@@ -284,7 +292,65 @@ rhit.FbSinglePageManager = class {
 }
 
 rhit.FbOfficerManager = class {
+	constructor() {
+		console.log("officerManager created");
+		this._documentSnapshots = null;
+		this._unsubscribe = null;
+		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_OFFICERS);
+	}
 
+	beginListening(changeListener) {
+		console.log("officer manager listening");
+		this._unsubscribe = this._ref.limit(50).onSnapshot((querySnapshot) => {
+			this._documentSnapshots = querySnapshot.docs;
+			changeListener();
+		});
+	}
+
+	stopListening() { this._unsubscribe(); }
+	add(uid) {
+		return this._ref.doc(uid).set({
+			[rhit.FB_OFFICER_KEY_USERNAME]: uid,
+			[rhit.FB_OFFICER_KEY_ADMIN]: false,
+		}).then(() => {
+			console.log("Officer Successfully added with id:", uid);
+		}).catch((error) => {
+			console.error("Error updating document: ", error)
+		})
+	}
+	update(id, admin) {
+		return this._ref.doc(id).update({
+			[rhit.FB_OFFICER_KEY_USERNAME]: id,
+			[rhit.FB_OFFICER_KEY_ADMIN]: admin,
+		}).then(() => {
+			console.log("Officer Sucessfully Updated");
+		}).catch((error) => {
+			console.error("Error updating document: ", error)
+		})
+	}
+	delete(id) {
+		return this._ref.doc(id).delete().catch((error) => {
+			console.error("Error deleting document: ", error)
+		})
+	}
+
+	getOfficerAtIndex(index) {
+		let doc = this._documentSnapshots[index]
+		return new rhit.Officer(doc.id, doc.get(rhit.FB_OFFICER_KEY_USERNAME), doc.get(rhit.FB_OFFICER_KEY_ADMIN))
+	}
+
+	getOfficerByID(uid) {
+		for (let doc of this._documentSnapshots) {
+			if (doc.id == uid) {
+				return new rhit.Officer(doc.id, doc.get(rhit.FB_OFFICER_KEY_USERNAME), doc.get(rhit.FB_OFFICER_KEY_ADMIN))
+			}
+		}
+		return null
+	}
+
+	get length() {
+		return this._documentSnapshots.length;
+	}
 }
 
 rhit.NavigatorController = class {
@@ -427,18 +493,193 @@ rhit.EditorController = class {
 			this.initialized = true;
 		}
 	}
+}
 
+rhit.FbAuthManager = class {
+	constructor() { 
+		this._user = null; 
+		this._documentSnapshot = null;
+		this._unsubscribe = null;
+		this._ref = firebase.firestore().collection(rhit.FB_COLLECTION_OFFICERS);
+	}
+	beginAuthListening(changeListener) {
+		console.log("auth listening");
+		firebase.auth().onAuthStateChanged((user) => {
+			this._user = user;
+			changeListener();
+		});
+	}
+
+	beginOfficerListening(uid, changeListener) {
+		console.log("officer listening");
+		this._unsubscribe = this._ref.doc(uid).onSnapshot((doc) => {
+			if (doc.exists) {
+				console.log(doc.data())
+				this._documentSnapshot = doc;
+				changeListener();
+			} else {
+				this._documentSnapshot = null;
+				console.log("No such document");
+			}
+		})
+	}
+
+	signIn() { 
+		Rosefire.signIn("322fb0bd-8401-4f6e-85cd-4882068b2f46", (err, rfUser) => {
+			if (err) {
+			  console.log("Rosefire error!", err);
+			  return;
+			}
+			console.log("Rosefire success!", rfUser);
+			firebase.auth().signInWithCustomToken(rfUser.token).catch(function(error) {
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				if (errorCode === 'auth/invalid-custom-token') {
+					alert("the token you provided is not valid");
+				} else {
+					console.error("custom auth error", errorCode, errorMessage);
+				}
+			}).then(() => {
+				window.location.href = "/profile.html"
+			})
+		});
+	}
+	signOut() { 
+		console.log("signing out");
+		firebase.auth().signOut(); 
+		window.location.href = "/"	
+	}
+	get uid() { return this._user.uid; }
+	get isSignedIn() { return !!this._user; }
+	get isOfficer() {
+		return !!this._documentSnapshot
+	}
+	get isAdmin() {
+		return this.isOfficer ? this._documentSnapshot.get(rhit.FB_OFFICER_KEY_ADMIN) : false;
+	}
+}
+
+rhit.OfficerListPageController = class {
+	constructor() {
+		console.log("officer list page controller created");
+		document.querySelector("#submitAddOfficer").onclick = (event) => {
+			let username = document.querySelector("#inputAddOfficerUsername").value
+			document.querySelector("#inputAddOfficerUsername").value = ""
+			rhit.fbOfficerManager.add(username)
+			console.log('username :>> ', username);
+		}
+		document.querySelector("#submitRemoveOfficer").onclick = (event) => {
+			let username = document.querySelector("#inputRemoveOfficerUsername").value
+			document.querySelector("#inputRemoveOfficerUsername").value = ""
+			let officer = rhit.fbOfficerManager.getOfficerByID(username)
+			if (officer) {
+				if (officer.admin) {
+					console.log("You cannot delete the admin");
+				} else {
+					rhit.fbOfficerManager.delete(username)
+				}
+			} else {
+				console.log("officer does not exist");
+			}
+		}
+		document.querySelector("#submitTransferAdmin").onclick = (event) => {
+			let username = document.querySelector("#inputTransferAdminUsername").value
+			document.querySelector("#inputTransferAdminUsername").value = ""
+			rhit.fbOfficerManager.update(username, true)
+			rhit.fbOfficerManager.update(rhit.fbAuthManager.uid, false)
+		}
+		rhit.fbAuthManager.beginAuthListening(() => {
+			rhit.fbAuthManager.beginOfficerListening(rhit.fbAuthManager.uid, () => {
+				if (rhit.fbAuthManager.isAdmin) {
+					document.querySelector("#addOfficerButton").style.display = "flex"
+					document.querySelector("#removeOfficerButton").style.display = "flex"
+					document.querySelector("#transferAdminButton").style.display = "flex"
+				}
+				
+			})
+		})
+		rhit.fbOfficerManager.beginListening(this.updateView.bind(this))
+	}
+
+	updateView() {
+		const newList = htmlToElement('<ul></ul>')
+		for (let i = 0; i < rhit.fbOfficerManager.length; i++) {
+			let officer = rhit.fbOfficerManager.getOfficerAtIndex(i);
+			const newOfficerItem = this._createOfficerItem(officer.username + (officer.admin ? " (Admin)" : ""));
+			newList.appendChild(newOfficerItem)
+		}
+
+		const oldList = document.querySelector("#officerListDiv > ul");
+		oldList.parentElement.appendChild(newList);
+		oldList.remove();
+	}
+
+	_createOfficerItem(officerName) {
+		return htmlToElement(`<li class='officer'>
+								${officerName}
+							</li>`);
+	}
+}
+
+
+rhit.ProfilePageController = class {
+	constructor() {
+		this.init = false
+		console.log("profile page controller created");
+		document.querySelector("#officerListButton").onclick = (event) => {
+			window.location.href = "/officerList.html"
+		}
+		document.querySelector("#signOutButton").onclick = (event) => {
+			rhit.fbAuthManager.signOut()
+		}
+		rhit.fbAuthManager.beginAuthListening(this.updateView.bind(this))
+	}
 	
+	updateView() {
+		document.querySelector("#usernameText").innerHTML = "Username: " + rhit.fbAuthManager.uid		
+		if (!this.init) {
+			rhit.fbAuthManager.beginOfficerListening(rhit.fbAuthManager.uid, this.updateOfficer.bind(this))
+			this.init = true
+		}
+	}
+
+	updateOfficer() {
+		if (rhit.fbAuthManager.isAdmin) {
+			document.querySelector("#memberStatusText").innerHTML = "Member status: Admin" 
+		}
+		else if (rhit.fbAuthManager.isOfficer) {
+			document.querySelector("#memberStatusText").innerHTML = "Member status: Officer" 
+		}
+		else {
+			document.querySelector("#memberStatusText").innerHTML = "Member status: Memeber" 
+		}
+	}
 }
 
 
 rhit.main = function () {
 	console.log("Ready");
 	const urlParams = new URLSearchParams(window.location.search);
-	console.log(urlParams.keys().next());
 	rhit.fbFolderManager = new rhit.FbFolderManager();
 	rhit.fbPageManager = new rhit.FbPageManager();
-
+	rhit.fbAuthManager = new rhit.FbAuthManager();
+	rhit.fbAuthManager.beginAuthListening(() => {
+		console.log("isSignedIn = ", rhit.fbAuthManager.isSignedIn);
+		if (rhit.fbAuthManager.isSignedIn) {
+			rhit.fbAuthManager.beginOfficerListening(rhit.fbAuthManager.uid, () => {
+				console.log("displaying edit button");
+				document.querySelector("#editButton").style.display = "flex"
+			})
+		}
+	})
+	document.querySelector("#profileButton").onclick = (event) => {
+		if (rhit.fbAuthManager.isSignedIn) {
+			console.log("moving to profile page");
+			window.location.href = "/profile.html"
+		} else  {
+			rhit.fbAuthManager.signIn()
+		}
+	}
 	if (document.querySelector("#leftNavigator")) {
 		new rhit.NavigatorController();
 	}
@@ -455,6 +696,13 @@ rhit.main = function () {
 			rhit.fbSinglePageManager = new rhit.FbSinglePageManager(pageId);
 			new rhit.EditorController(pageId);
 		}
+	}
+	if (document.querySelector("#profilePage")) {
+		new rhit.ProfilePageController()
+	}
+	if (document.querySelector("#officerListPage")) {
+		rhit.fbOfficerManager = new rhit.FbOfficerManager()
+		new rhit.OfficerListPageController()
 	}
 };
 

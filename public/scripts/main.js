@@ -363,6 +363,7 @@ rhit.EditorController = class {
 			document.querySelector("#videoEmbed").src = getVideoEmbedCode(inputVideoUrl.value);
 		});
 
+
 		rhit.fbSinglePageManager.beginListening(this.initializeFields.bind(this))
 	}
 
@@ -370,21 +371,54 @@ rhit.EditorController = class {
 		if (!this.initialized) {
 			document.querySelector("#inputPageName").value = rhit.fbSinglePageManager.name;
 			document.querySelector("#inputVideoUrl").value = rhit.fbSinglePageManager.videoLink;
-			document.querySelector("#inputPageBody").value = rhit.fbSinglePageManager.body;
+			// document.querySelector("#editor").value = rhit.fbSinglePageManager.body;
 			document.querySelector("#hiddenCheck").checked = rhit.fbSinglePageManager.hidden;
 			document.querySelector("#videoEmbed").src = getVideoEmbedCode(rhit.fbSinglePageManager.videoLink)
 			document.querySelector("#cancelButton").onclick = (event) => {
 				window.location.href = `/editPagesList.html?fid=${rhit.fbSinglePageManager.folderId}`
 			}
-			document.querySelector("#saveButton").onclick = (event) => {
-				const name = document.querySelector("#inputPageName").value;
-				const videoLink = document.querySelector("#inputVideoUrl").value;
-				const body = document.querySelector("#inputPageBody").value;
-				const hidden = document.querySelector("#hiddenCheck").checked;
-				rhit.fbSinglePageManager.update(name, videoLink, body, hidden).then(() => {
-					window.location.href = `/?id=${rhit.fbSinglePageManager.pageId}`
-				});
-			}
+
+			// https://ckeditor.com/docs/ckeditor5/latest/api/module_editor-classic_classiceditor-ClassicEditor.html#function-getData
+			ClassicEditor
+			.create( document.querySelector( '#editor' ), {
+				initialData: `${rhit.fbSinglePageManager.body}`
+			}  )
+			.then( editor => {
+				console.log( 'Editor was initialized', editor );
+				document.querySelector("#saveButton").onclick = (event) => {
+					const body = editor.getData();
+					const name = document.querySelector("#inputPageName").value;
+					const videoLink = document.querySelector("#inputVideoUrl").value;
+					// const body = document.querySelector("#editor").value;
+					const hidden = document.querySelector("#hiddenCheck").checked;
+	
+	
+					rhit.fbSinglePageManager.update(name, videoLink, body, hidden).then(() => {
+						if(hidden){
+							window.location.href = `/editPagesList.html?fid=${rhit.fbSinglePageManager.folderId}`
+						}
+						else{
+							window.location.href = `/?id=${rhit.fbSinglePageManager.pageId}`
+						}
+					});				
+				}
+			} )
+			.catch( err => {
+				console.error( err.stack );
+			} );
+
+
+			// document.querySelector("#saveButton").onclick = (event) => {
+			// 	const name = document.querySelector("#inputPageName").value;
+			// 	const videoLink = document.querySelector("#inputVideoUrl").value;
+			// 	// const body = document.querySelector("#editor").value;
+			// 	const hidden = document.querySelector("#hiddenCheck").checked;
+
+
+			// 	rhit.fbSinglePageManager.update(name, videoLink, body, hidden).then(() => {
+			// 		window.location.href = `/?id=${rhit.fbSinglePageManager.pageId}`
+			// 	});
+			// }
 			document.querySelector("#submitDeletePage").onclick = (event) => {
 				rhit.fbSinglePageManager.delete().then(() => {
 					window.location.href = `/editPagesList.html?fid=${rhit.fbSinglePageManager.folderId}`
